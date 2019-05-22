@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <title>bgmusic wxbridge</title>
+    </head>
+    <body>
+        <h1>bgmusic WeixinJSBridgeReady</h1>
+        <audio id="bgmusic" src="bgmusic.mp3" preload="auto" loop></audio>
+        <script src="js/common.js"></script>
+        <script>
+            function playBackgroundMusic() {
+                makeLog('play');
+                var bgMusic = document.getElementById('bgmusic');
+                bgMusic.play();
+            }
+
+            document.addEventListener(
+                'WeixinJSBridgeReady',
+                function() {
+                    makeLog('WeixinJSBridgeReady');
+                    playBackgroundMusic();
+                },
+                false
+            );
+        </script>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <title>bgmusic wxjs</title>
+    </head>
+    <body>
+        <h1>bgmusic wxjs</h1>
+        <audio id="bgmusic" src="bgmusic.mp3" preload="auto" loop></audio>
+        <script src="js/common.js"></script>
+        <script src="js/jsweixin-1.4.0.js"></script>
+        <script>
+            function playBackgroundMusic() {
+                var bgMusic = document.getElementById('bgmusic');
+                bgMusic.play();
+            }
+
+            // 微信配置信息 即使不正确也没问题，但是一定要有这一步
+            wx.config({
+                debug: false,
+                appId: '',
+                timestamp: 1,
+                nonceStr: '',
+                signature: '',
+                jsApiList: [],
+            });
+
+            // 在ready时触发相关事件
+            wx.ready(function() {
+                makeLog('wxready');
+                playBackgroundMusic();
+            });
+        </script>
+    </body>
+</html>

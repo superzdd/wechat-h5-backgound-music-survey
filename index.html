@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>bgmusic org</title>
+    </head>
+    <body>
+        <h1>bgmusic org</h1>
+        <audio id="bgmusic" src="bgmusic.mp3" preload="auto" loop></audio>
+        <script src="js/common.js"></script>
+        <script>
+            function playBackgroundMusic() {
+                makeLog('play');
+                var bgMusic = document.getElementById('bgmusic');
+                bgMusic.play();
+            }
+
+            playBackgroundMusic();
+        </script>
+    </body>
+</html>

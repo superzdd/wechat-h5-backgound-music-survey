@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <title>bgmusic wxjs soundjs</title>
+    </head>
+    <body>
+        <h1>
+            bgmusic wxjs soundjs
+        </h1>
+        <script src="js/common.js"></script>
+        <script src="js/soundjs.min.js"></script>
+        <script src="js/jsweixin-1.4.0.js"></script>
+        <script>
+            var soundLoadComplete = false; // 背景音乐是否加载完毕
+            var backgroundMusicInstance = null; // 背景音乐实例
+            createjs.Sound.alternateExtensions = ['mp3'];
+            createjs.Sound.on('fileload', loadHandler, this);
+            createjs.Sound.registerSound('bgmusic.mp3', 'sound');
+
+            function loadHandler(event) {
+                makeLog('music load complete');
+                soundLoadComplete = true;
+            }
+
+            // 微信配置信息 即使不正确也没问题，但是一定要有这一步
+            wx.config({
+                debug: false,
+                appId: '',
+                timestamp: 1,
+                nonceStr: '',
+                signature: '',
+                jsApiList: [],
+            });
+
+            // 在ready时触发相关事件
+            wx.ready(function() {
+                makeLog('wxready');
+                var intInstance = setInterval(function() {
+                    if (soundLoadComplete) {
+                        clearInterval(intInstance);
+                        makeLog('play');
+                        backgroundMusicInstance = createjs.Sound.play('sound');
+                    }
+                }, 10);
+            });
+        </script>
+    </body>
+</html>

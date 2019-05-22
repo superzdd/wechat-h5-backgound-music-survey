@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <title>bgmusic wxbridge soundjs preloadjs</title>
+    </head>
+    <body>
+        <h1>bgmusic WeixinJSBridgeReady soundjs preloadjs</h1>
+        <script src="js/common.js"></script>
+        <script src="js/preloadjs.min.js"></script>
+        <script src="js/soundjs.min.js"></script>
+        <script>
+            var soundLoadComplete = false; // 背景音乐是否加载完毕
+            var backgroundMusicInstance = null; // 背景音乐实例
+
+            var queue = new createjs.LoadQueue();
+            queue.installPlugin(createjs.Sound);
+            queue.on('complete', handleComplete, this);
+
+            function handleComplete() {
+                soundLoadComplete = true;
+            }
+
+            document.addEventListener(
+                'WeixinJSBridgeReady',
+                function() {
+                    queue.loadFile({
+                        id: 'sound',
+                        src: 'bgmusic.mp3',
+                    });
+
+                    // 微信
+                    makeLog('WeixinJSBridgeReady');
+                    var intInstance = setInterval(function() {
+                        if (soundLoadComplete) {
+                            clearInterval(intInstance);
+                            makeLog('play');
+                            backgroundMusicInstance = createjs.Sound.play(
+                                'sound'
+                            );
+                        }
+                    }, 10);
+                },
+                false
+            );
+        </script>
+    </body>
+</html>

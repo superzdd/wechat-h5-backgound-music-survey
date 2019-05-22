@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <title>bgmusic soundjs</title>
+    </head>
+    <body>
+        <h1>bgmusic soundjs</h1>
+        <script src="js/common.js"></script>
+        <script src="js/soundjs.min.js"></script>
+        <script>
+            createjs.Sound.alternateExtensions = ['mp3'];
+            createjs.Sound.on('fileload', this.loadHandler, this);
+            createjs.Sound.registerSound('bgmusic.mp3', 'sound');
+
+            function loadHandler(event) {
+                makeLog('sound load music complete and play');
+                var instance = createjs.Sound.play('sound');
+            }
+        </script>
+    </body>
+</html>
