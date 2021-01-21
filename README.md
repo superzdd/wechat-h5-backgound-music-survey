@@ -84,7 +84,7 @@
 	);
 	```
 	
-	`WeixinJSBridgeReady`方法有个缺点，就是`soundjs的背景音乐实例`必须一起传入`WeixinJSBridgeReady`中，才能实现自动播放。示例如下：
+	`WeixinJSBridgeReady`方法有个缺点，**注册音乐**必须写到`WeixinJSBridgeReady`中，才能实现自动播放。示例如下：
 
     ```js
 	var soundLoadComplete = false; // 背景音乐是否加载完毕
@@ -100,7 +100,9 @@
     document.addEventListener(
         'WeixinJSBridgeReady',
         function() {
-            createjs.Sound.registerSound('bgmusic.mp3', 'sound'); // 关键代码。注意，这句 registerSound 必须写在 WeixinJSBridgeReady 回调函数内才行,否则下方 createjs.Sound.play 就会无效
+			// 关键代码。下面这句 registerSound 必须写在 WeixinJSBridgeReady 回调函数内才行，
+			// createjs.Sound.play 就会无效
+            createjs.Sound.registerSound('bgmusic.mp3', 'sound'); 
             var intInstance = setInterval(function() {
                 if (soundLoadComplete) {
                     clearInterval(intInstance);
@@ -112,7 +114,9 @@
     );
 
     // 无法自动播放的场景
-    createjs.Sound.registerSound('bgmusic.mp3', 'sound'); // 在bridge外部就启动了加载，导致WeixinJSBridgeReady内部在执行播放命令之前都没有国Sound这个对象的实例，所以没法自动播放音乐
+	// 在bridge外部就启动了加载，导致WeixinJSBridgeReady内部在执行播放命令之前，
+	// 都没有Sound这个对象的实例，所以没法自动播放音乐
+    createjs.Sound.registerSound('bgmusic.mp3', 'sound'); 
     document.addEventListener(
         'WeixinJSBridgeReady',
         function() {
@@ -153,7 +157,7 @@
 			bgMusic.play();
 		});
 	```
-	与`WeixinJSBridgeReady`不同，`jweixin`不需要`soundjs的背景音乐实例`必须声明在`wx.ready`中。
+	与`WeixinJSBridgeReady`不同，`jweixin`不需要**注册音乐**写在`wx.ready`中。
 	
 
 ## 方案demo
