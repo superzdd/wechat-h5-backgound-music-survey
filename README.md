@@ -72,36 +72,36 @@
    任何运行在微信浏览器中的 H5 页面，都会监听到一个`WeixinJSBridgeReady`事件，在这个事件中就可以播放音乐。
    > 纯主观推测：可能`WeixinJSBridgeReady`对系统有非常高的权限，因为是微信浏览器中对网页暴露出的第一个事件。
 
-	```js
-	document.addEventListener(
-		'WeixinJSBridgeReady',
-		function() {
-			// 播放背景音乐
-			var bgMusic = document.getElementById('bgmusic');
-			bgMusic.play();
-		},
-		false
-	);
-	```
+    ```js
+    document.addEventListener(
+        'WeixinJSBridgeReady',
+        function() {
+            // 播放背景音乐
+            var bgMusic = document.getElementById('bgmusic');
+            bgMusic.play();
+        },
+        false
+    );
+    ```
 	
 	`WeixinJSBridgeReady`方法有个缺点，**注册音乐**必须写到`WeixinJSBridgeReady`中，才能实现自动播放。示例如下：
 
     ```js
-	var soundLoadComplete = false; // 背景音乐是否加载完毕
-	var backgroundMusicInstance = null; // 背景音乐实例
-	createjs.Sound.alternateExtensions = ['mp3'];
-	createjs.Sound.on('fileload', loadHandler, this);
-	
-	function loadHandler(event) {
-	    soundLoadComplete = true;
-	}
-	
-	// 可以自动播放的场景
+    var soundLoadComplete = false; // 背景音乐是否加载完毕
+    var backgroundMusicInstance = null; // 背景音乐实例
+    createjs.Sound.alternateExtensions = ['mp3'];
+    createjs.Sound.on('fileload', loadHandler, this);
+    
+    function loadHandler(event) {
+        soundLoadComplete = true;
+    }
+    
+    // 可以自动播放的场景
     document.addEventListener(
         'WeixinJSBridgeReady',
         function() {
-			// 关键代码。下面这句 registerSound 必须写在 WeixinJSBridgeReady 回调函数内才行，
-			// createjs.Sound.play 就会无效
+            // 关键代码。下面这句 registerSound 必须写在 WeixinJSBridgeReady 回调函数内才行，
+            // createjs.Sound.play 就会无效
             createjs.Sound.registerSound('bgmusic.mp3', 'sound'); 
             var intInstance = setInterval(function() {
                 if (soundLoadComplete) {
@@ -114,8 +114,8 @@
     );
 
     // 无法自动播放的场景
-	// 在bridge外部就启动了加载，导致WeixinJSBridgeReady内部在执行播放命令之前，
-	// 都没有Sound这个对象的实例，所以没法自动播放音乐
+    // 在bridge外部就启动了加载，导致WeixinJSBridgeReady内部在执行播放命令之前，
+    // 都没有Sound这个对象的实例，所以没法自动播放音乐
     createjs.Sound.registerSound('bgmusic.mp3', 'sound'); 
     document.addEventListener(
         'WeixinJSBridgeReady',
@@ -130,7 +130,7 @@
         false
     );
     ```
-	
+    
 2. jweixin
 
 	[微信官方文档](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html)
@@ -140,22 +140,22 @@
 	`jweixin`是微信官方提供的js-sdk，在其 `wx.ready` 事件中，也能实现自动播放音乐：
 
 	```js
-		// 微信配置信息 即使不正确也没问题，但是一定要有这一步
-		wx.config({
-			debug: false,
-			appId: '',
-			timestamp: 1,
-			nonceStr: '',
-			signature: '',
-			jsApiList: [],
-		});
+        // 微信配置信息 即使不正确也没问题，但是一定要有这一步
+        wx.config({
+            debug: false,
+            appId: '',
+            timestamp: 1,
+            nonceStr: '',
+            signature: '',
+            jsApiList: [],
+        });
 
-		// 在ready时触发相关事件
-		wx.ready(function() {
-			// 播放背景音乐
-			var bgMusic = document.getElementById('bgmusic');
-			bgMusic.play();
-		});
+        // 在ready时触发相关事件
+        wx.ready(function() {
+            // 播放背景音乐
+            var bgMusic = document.getElementById('bgmusic');
+            bgMusic.play();
+        });
 	```
 	与`WeixinJSBridgeReady`不同，`jweixin`不需要**注册音乐**写在`wx.ready`中。
 	
